@@ -41,28 +41,28 @@ class PlayerService : Service() {
 
     fun playCurrent() {
         val song = playlist.getOrNull(index) ?: return
-        currentSong = song
+        this.currentSong = song
         mp?.release()
-        mp = MediaPlayer().apply {
-            setDataSource(applicationContext, android.net.Uri.parse(song.uri))
-            setOnPreparedListener {
-                it.start()
-                isPlaying = true
-                showNotification()
-            }
-            setOnCompletionListener { next() }
-            prepareAsync()
+        val player = MediaPlayer()
+        player.setDataSource(applicationContext, android.net.Uri.parse(song.uri))
+        player.setOnPreparedListener {
+            it.start()
+            this.isPlaying = true
+            showNotification()
         }
+        player.setOnCompletionListener { next() }
+        player.prepareAsync()
+        mp = player
     }
 
     fun toggle() {
         val p = mp ?: return
         if (p.isPlaying) {
             p.pause()
-            isPlaying = false
+            this.isPlaying = false
         } else {
             p.start()
-            isPlaying = true
+            this.isPlaying = true
         }
         showNotification()
     }
