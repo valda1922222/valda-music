@@ -25,8 +25,11 @@ jobs:
       - name: Kasih izin gradlew
         run: chmod +x ./gradlew
 
+      - name: Bersihin cache lama
+        run: ./gradlew clean
+
       - name: Bikin APK Debug
-        run: ./gradlew assembleDebug --stacktrace
+        run: ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Simpan APK
         uses: actions/upload-artifact@v4
