@@ -17,14 +17,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Pasang Android SDK
+      - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-34 build-tools;34.0.0'
 
       - name: Kasih izin gradlew
         run: chmod +x ./gradlew
 
       - name: Bikin APK Debug
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug --stacktrace
 
       - name: Simpan APK
         uses: actions/upload-artifact@v4
