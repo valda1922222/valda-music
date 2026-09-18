@@ -33,7 +33,8 @@ class PlayerService : Service() {
     }
 
     fun setQueue(songs: List<Song>, startIndex: Int) {
-        playlist.clear(); playlist += songs
+        playlist.clear()
+        playlist.addAll(songs)
         index = startIndex
         playCurrent()
     }
@@ -45,7 +46,8 @@ class PlayerService : Service() {
         mp = MediaPlayer().apply {
             setDataSource(applicationContext, android.net.Uri.parse(song.uri))
             setOnPreparedListener {
-                it.start(); isPlaying = true
+                it.start()
+                isPlaying = true
                 showNotification()
             }
             setOnCompletionListener { next() }
@@ -55,8 +57,13 @@ class PlayerService : Service() {
 
     fun toggle() {
         val p = mp ?: return
-        if (p.isPlaying) { p.pause(); isPlaying = false }
-        else { p.start(); isPlaying = true }
+        if (p.isPlaying) {
+            p.pause()
+            isPlaying = false
+        } else {
+            p.start()
+            isPlaying = true
+        }
         showNotification()
     }
 
